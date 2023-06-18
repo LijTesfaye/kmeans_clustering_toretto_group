@@ -17,9 +17,16 @@ These are the *four* main steps that the mapreduce framework process goes throug
 ## The Pseudocode(s) in the Project
 Here after we will present the **pseudocode** that we used in the development of this project.
 ### Mapper Pseudocode
-Input: key -> the **offset from the file** and the value -> a datapoint **p**
-
-Output: key -> µc, value -> p, where µc is the closest centroid to the input datapoint p.
+Input:
+```java
+key :the **offset from the file** 
+value:a datapoint **p**
+```
+Output: 
+```java
+key: µc i.e the closest centroid
+value :p, i.e datapoint p.
+```
 ```java
 class MAPPER
 	The list_of_centroids {µ1,µ2,...} are randomly sampled from X
