@@ -19,8 +19,8 @@ Here after we will present the **pseudocode** that we used in the development of
 ### Mapper Pseudocode
 Input:
 ```java
-key :the **offset from the file** 
-value:a datapoint **p**
+key : the offset from the file 
+value : datapoint p
 ```
 Output: 
 ```java
@@ -98,7 +98,6 @@ class REDUCER
 	EMIT(centroid_index,new_centroid)
 ```
 NB:
-
 The result of the MapReduce stage will be the same even if the combiner is not called by the Hadoop framework.
 
 ## Validation of Our Algorithm
