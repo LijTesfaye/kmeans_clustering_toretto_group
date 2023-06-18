@@ -52,8 +52,8 @@ The Combiner algorithm takes as input a **centroid** and a **list of points in t
 
 Input
 ```java
-key:centroid ω
-value: list_of_points_in_ω	
+key:centroid_index
+value: list_of_points_in_centroid	
 ```
 Output
 ```java
@@ -63,7 +63,7 @@ value: partial_point_sum
 Here is the pseudocode of the Combiner
  ```java
 class COMBINER
-    method COMBINER(centroid ω, list_of_points_in_ω)
+    method COMBINER(centroid_index, list_of_points)
         partial_points_sum = 0
         partial_points_count = 0
         for all point in list_of_points_in_ω:
