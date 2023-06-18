@@ -14,11 +14,12 @@ These are the *four* main steps that the mapreduce framework process goes throug
 - **Shuffling**: This phase consumes the output of Mapping phase. Its task is to consolidate the relevant records from Mapping phase output. 
 - **Reducing**: In this phase, output values from the Shuffling phase are aggregated, in parallel. This phase combines values from Shuffling phase and returns a single output value. If more than one **Reducers** are used, the MapReduce system collects all the Reduce output and sorts it by key to produce the final outcome.
 
-## The Hadoop Framework
+## The Pseudocode(s) in the Project
 Here after we will present the **pseudocode** that we used in the development of this project.
 ### Mapper Pseudocode
-Input: key: the **its offset from the file** and the value: a datapoint **p**
-Output: µc,p, where µc is the closest centroid to the input datapoint p.
+Input: key -> the **offset from the file** and the value -> a datapoint **p**
+
+Output: key -> µc, value -> p, where µc is the closest centroid to the input datapoint p.
 ```java
 class MAPPER
 	The list_of_centroids {µ1,µ2,...} are randomly sampled from X
@@ -36,10 +37,56 @@ class MAPPER
 	  EMIT(centroid µc,DataPoints p)
 ```
 ### Combiner Pseudocode
+On every stage we need to sum the data points belonging to a cluster to calculate the centroid (arithmetic mean of points). 
+Since the sum is an associative and commutative function, it will be very advantageous to use a combiner to reduce the amount 
+of data to be transmitted to the reducers.
 
+The Combiner algorithm takes as input a **centroid** and a **list of points in that centroid**. For all points in the list calculates the partial count as the sum of all the counts and the partial sum as the sum of all the points. At the end emits the centroid as the key and the list of partialSum as value.
 
+Input
+```java
+key:centroid ω
+value: list_of_points_in_ω	
+```
+Output
+```java
+key: centroid_index
+value: partial_point_sum
+```
+Here is the pseudocode of the Combiner
+ ```java
+class COMBINER
+    method COMBINER(centroid ω, list_of_points_in_ω)
+        partial_points_sum = 0
+        partial_points_count = 0
+        for all point in list_of_points_in_ω:
+            partial_points_sum  += point
+            partial_points_count += 1
+        EMIT(centroid_index, partial_point_sum) 
+```
 
 ### Reducer Pseudocode
+Finally the **reducer** calculates the new approximation of the centroid and emits it. 
+```java
+class REDUCER
+	method REDUCE(centroid µ, list_partial_points_sum)
+		total_count = getNumPoints(partial_sum)
+		points_sum=0
+		for all partial_points_sum in list_partial_points_sum:
+			points_sum += partial_point_sum
+			total_count +=getNumPoints(partial_points_sum)
+		new_centroid_=points_sum/total_count
+	EMIT(centroid_index,new_centroid)
+```
+NB:
+
+The result of the MapReduce stage will be the same even if the combiner is not called by the Hadoop framework.
+
+## Validation of Our Algorithm
+#### 2D random sample dataset
+
+## Test 
+
 
 
 
