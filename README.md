@@ -17,24 +17,23 @@ These are the *four* main steps that the mapreduce framework process goes throug
 ## The Hadoop Framework
 Here after we will present the **pseudocode** that we used in the development of this project.
 ### Mapper Pseudocode
-Input: a single datapoint **p** and **its offset from the file**.
-Output: µi,p and count 1 where µi is the nearest centroid to the input datapoin,p, and the count.
+Input: key: the **its offset from the file** and the value: a datapoint **p**
+Output: µc,p, where µc is the closest centroid to the input datapoint p.
 ```java
 class MAPPER
 	The list_of_centroids {µ1,µ2,...} are randomly sampled from X
 	method MAP(offset_file,DataPoints p)
 		// initialize values, min distance and the closest centroid
 		minDistance <- +infinity
-		<sub>subscript</sub>
-		centroid µ<sub>c</sub> <- {}
+		centroid µc <- {}
 		for each centroid µ in list_of_centroids[µ1,µ2,...] do
-      // calculate distance
+			// calculate distance
 			distance <- calculateDistance(p,µ)
-			// update the closest centroid
-			if distance < minDistance:
-       minDistance = distance
-       closestCentroid= centroid µ
-	  EMIT(centroid closestCentroid,DataPoints p)
+		 	// update the closest centroid
+		 	if distance < minDistance:
+		   	 minDistance = distance
+       		   	 µc = centroid µ
+	  EMIT(centroid µc,DataPoints p)
 ```
 ### Combiner Pseudocode
 
