@@ -67,6 +67,17 @@ class COMBINER
 
 ### Reducer Pseudocode
 Finally the **reducer** calculates the new approximation of the centroid and emits it. 
+Input
+```java
+key: centroid_index
+value:list_partial_points_sum
+```
+Output
+```java
+key: new_centroid_index
+value:new_centroid
+```
+Here is the full pseudocode for the Reducer.
 ```java
 class REDUCER
 	method REDUCE(centroid_index, list_partial_points_sum)
@@ -86,6 +97,7 @@ The result of the MapReduce stage will be the same even if the combiner is not c
 #### 2D random sample dataset
 
 ## Test 
+-
 
 
 
