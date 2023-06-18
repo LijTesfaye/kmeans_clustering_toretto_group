@@ -74,6 +74,7 @@ class COMBINER
 
 ### Reducer Pseudocode
 Finally the **reducer** calculates the new approximation of the centroid and emits it. 
+
 Input
 ```java
 key: centroid_index
