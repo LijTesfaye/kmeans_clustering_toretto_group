@@ -62,15 +62,15 @@ class COMBINER
         for all point in list_of_points_in_ω:
             partial_points_sum  += point
             partial_points_count += 1
-        EMIT(centroid_index, partial_point_sum) 
+        EMIT(centroid_index, partial_points_sum) 
 ```
 
 ### Reducer Pseudocode
 Finally the **reducer** calculates the new approximation of the centroid and emits it. 
 ```java
 class REDUCER
-	method REDUCE(centroid µ, list_partial_points_sum)
-		total_count = getNumPoints(partial_sum)
+	method REDUCE(centroid_index, list_partial_points_sum)
+		total_count = getNumPoints(partial_points_sum)
 		points_sum=0
 		for all partial_points_sum in list_partial_points_sum:
 			points_sum += partial_point_sum
