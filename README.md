@@ -25,6 +25,7 @@ class MAPPER
 	method MAP(offset_file,DataPoints p)
 		// initialize values, min distance and the closest centroid
 		minDistance <- +infinity
+		<sub>subscript</sub>
 		centroid µ<sub>c</sub> <- {}
 		for each centroid µ in list_of_centroids[µ1,µ2,...] do
       // calculate distance
