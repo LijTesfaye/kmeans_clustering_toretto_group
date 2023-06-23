@@ -75,7 +75,7 @@ class COMBINER
 ### Reducer Pseudocode
 Finally the **reducer** calculates the new approximation of the centroid and emits it. 
 
-Input
+**Input
 ```java
 key: centroid_index
 value:list_partial_points_sum
@@ -96,14 +96,18 @@ class REDUCER
 			total_count +=getNumPoints(partial_points_sum)
 		new_centroid_=points_sum/total_count
 	EMIT(centroid_index,new_centroid)
-```
+```**
 NB:
 The result of the MapReduce stage will be the same even if the combiner is not called by the Hadoop framework.
 
 ## Validation of Our Algorithm
 #### 2D random sample dataset
+We generated a sample dataset using a python script to validate the 
+work we did using **Mapreduce** and the **kmeans using python's** kmeans
+class.
 
-## Test 
+## Test
+ 
 -
 
 
