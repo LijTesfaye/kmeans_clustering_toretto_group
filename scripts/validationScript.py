@@ -20,17 +20,11 @@ kmeans = KMeans(n_clusters=clusters, init='random', random_state=42).fit(dataset
 end_milli_time = round(time.time() * 1000, 4)
 execution_time = round(end_milli_time - start_milli_time, 4)
 
-# with open('output_2d.txt', 'a') as f:
-#    f.write("execution time: " + str(execution_time) + ' ms \n')
-#    f.write('centroids:\n'+ str(kmeans.cluster_centers_) + '\n')
-#    f.write('n_iter: ' + str(kmeans.n_iter_) + '\n\n')
-
-
 print(f"Execution time:{str(execution_time)} ms")
 print(f"cluster_centers:{str(kmeans.cluster_centers_)}")
 print(str(f"{kmeans.n_iter_}"))
 
-# plot black points and red centroids
+# plot as black points and red centroids
 cent = kmeans.cluster_centers_
 centr = np.array(cent)
 
@@ -39,7 +33,7 @@ c = np.vstack([dataset, centr])
 
 df = pd.DataFrame({'x': c[:, 0], 'y': c[:, 1]})
 
-# Declare a list that is to be converted into a column
+# show the all the elements in the 'wc' as black and the 'means' as red
 labels = []
 for i in range(0, 1000):
     labels.append('black')
