@@ -1,0 +1,78 @@
+
+1) cd /home/tess/IdeaProjects/kmeans_clustering_hadoop/target/
+2) hadoop jar kmeans.clustering.hadoop-1.0-SNAPSHOT.jar  it.unipi.cc.toretto.kmeans.KMeansMRMain 4 2 1000 7d_1000n_7k.txt output7d_1000n_7k.txt 0.5
+
+// for my implementation the
+Fist time you run:
+1) cd /home/tess/IdeaProjects/kmeans_clustering_hadoop/target/
+1.1) put the input text file to the HDFS filesystem,
+// /home/tess/IdeaProjects/kmeans_clustering_hadoop/scripts/data2D4means.txt
+cd /home/tess/IdeaProjects/kmeans_clustering_hadoop/scripts/
+$ hadoop fs -put data2D4means.txt /input/data2D4means.txt
+$ hadoop jar kmeans.hadoop.toretto-1.0-SNAPSHOT.jar it.unipi.cc.toretto.kmeans.KMeansMRMain /user/input/data2D4means.txt /output
+
+other times:
+$ cd /home/tess/IdeaProjects/kmeans_clustering_hadoop/target/
+$ hadoop jar kmeans.hadoop.toretto-1.0-SNAPSHOT.jar it.unipi.cc.toretto.kmeans.KMeansMRMain /user/input/data2D4means.txt /output
+
+
+*** Extra
+1) To delete a directory use this
+
+hadoop fs -rm -r /output/output
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+scp target/wordcount-1.0-SNAPSHOT.jar hadoop@<vm ip address>:
+1) Copy the target jar file
+scp target/hadoopexample-1.0-SNAPSHOT.jar hadoop@10.1.1.18:
+
+2) Copy the input file
+scp input.txt hadoop@10.1.1.18
+
+Once in the remote machine you can do the following:
+3) Copy the file(s) to the  like this
+
+hadoop fs -put input.txt input.txt
+hadoop jar hadoopexample-1.0-SNAPSHOT.jar org.example.sample.WordCount input.txt output
+****
+hadoop fs -put /home/tess/IdeaProjects/hadoopexample/input.txt input.txt
+hadoop jar /home/tess/IdeaProjects/hadoopexample/target/hadoopexample-1.0-SNAPSHOT.jar org.example.sample.WordCount input.txt output
+****
+//start all the daemons like this
+NB: In the remote machine don't forget to wake up the two daemons i.e the namemode and the yarn
+ cd /opt/hadoop/
+ sbin/start-hdf.sh
+ sbin/start-yarn.sh
+ OR
+ start-all.sh
+
+*** View output like this
+  hadoop fs -cat /user/tess/output/part-r-00000
+****
+//stop all the daemons, in the remote machine, like this :-
+hdfs --daemon stop namenode
+hdfs --daemon stop datanode
+yarn --daemon stop resourcemanager
+yarn --daemon stop nodemanager
+OR
+stop-all.sh
+***
