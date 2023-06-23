@@ -12,7 +12,7 @@
   </property>
   <property>
     <name>k</name>
-    <value>2</value>
+    <value>4</value>
     <description>Number of centroids</description>
   </property>
   <property>
