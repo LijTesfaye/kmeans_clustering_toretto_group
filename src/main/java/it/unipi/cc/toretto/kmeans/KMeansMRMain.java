@@ -157,7 +157,7 @@ public class KMeansMRMain {
 
     private static void writeCentroids(Configuration conf, DataPoints[] centroids, String output) throws IOException {
         FileSystem hdfsFileSystem = FileSystem.get(conf);
-        FSDataOutputStream outputStream = hdfsFileSystem.create(new Path(output + "/initialcentroids.txt"), true);
+        FSDataOutputStream outputStream = hdfsFileSystem.create(new Path(output + "/MapReducecentroids.txt"), true);
         BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream));
         //Write the result in a unique file
         for(int i = 0; i < centroids.length; i++) {
