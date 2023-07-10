@@ -29,7 +29,7 @@ value :p, i.e datapoint p.
 ```
 ```java
 class MAPPER
-	The list_of_centroids {µ1,µ2,...} are randomly sampled from X
+	The initial centroids {µ1,µ2,...} are randomly sampled from X and are stored in a file.
 	method MAP(offset_file,DataPoints p)
 		// initialize values, min distance and the closest centroid
 		minDistance <- +infinity
