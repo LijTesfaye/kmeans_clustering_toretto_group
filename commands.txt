@@ -37,10 +37,6 @@ hadoop fs -rm -r /output/output
 
 
 
-
-
-
-
 scp target/wordcount-1.0-SNAPSHOT.jar hadoop@<vm ip address>:
 1) Copy the target jar file
 scp target/hadoopexample-1.0-SNAPSHOT.jar hadoop@10.1.1.18:

@@ -2,18 +2,18 @@
 <configuration>
   <property>
     <name>dataset</name>
-    <value>10</value>
+    <value>2</value>
     <description>Dimension of the dataset</description>
   </property>
   <property>
     <name>distance</name>
-    <value>5</value>
+    <value>2</value>
     <description>Type of distance adopted</description>
   </property>
   <property>
     <name>k</name>
     <value>4</value>
-    <description>Number of centroids</description>
+    <description>Number of clusters</description>
   </property>
   <property>
     <name>threshold</name>
@@ -22,7 +22,7 @@
   </property>
   <property>
     <name>max.iteration</name>
-    <value>30</value>
-    <description>Maximum number of iteration</description>
+    <value>100</value>
+    <description>Maximum iterations</description>
   </property>
 </configuration>
