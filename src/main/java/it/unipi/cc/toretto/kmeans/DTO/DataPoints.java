@@ -1,7 +1,6 @@
 package it.unipi.cc.toretto.kmeans.DTO;
 
 import org.apache.hadoop.io.Writable;
-import org.apache.hadoop.io.WritableComparable;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -62,7 +61,7 @@ public class DataPoints implements Writable {
         //TODO calculate the average of the datapoints
         for (int i = 0; i < this.dataDimension; i++) {
             float temp = this.features[i] / this.numberOfPoints;
-            this.features[i] = (float)Math.round(temp*100000)/100000.0f;
+            this.features[i] = (float)Math.round(temp*10000)/10000.0f; // Round to 4 decimal places.
         }
         this.numberOfPoints = 1;
     }
@@ -77,7 +76,6 @@ public class DataPoints implements Writable {
         if (h < 0) {
             h = 2;
         }
-
         if (h == 0) {
             // Chebyshev
             float max = -1f;
@@ -91,7 +89,7 @@ public class DataPoints implements Writable {
             return max;
 
         } else {
-            // Manhattan, Euclidean, Minkowsky
+            // Manhattan, Euclidean
             float dist = 0.0f;
             for (int i = 0; i < this.dataDimension; i++) {
                 dist += Math.pow(Math.abs(this.features[i] - p.features[i]), h);
@@ -100,8 +98,8 @@ public class DataPoints implements Writable {
             return dist;
         }
     }
-
     public boolean equals(Object o){
+
         return true;
     }
     public int hashCode(){

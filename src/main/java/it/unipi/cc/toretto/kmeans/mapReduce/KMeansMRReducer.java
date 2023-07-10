@@ -1,25 +1,16 @@
 package it.unipi.cc.toretto.kmeans.mapReduce;
-
 import it.unipi.cc.toretto.kmeans.DTO.DataPoints;
-import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.FileSystem;
-import org.apache.hadoop.fs.Path;
+
 import org.apache.hadoop.io.IntWritable;
-import org.apache.hadoop.io.SequenceFile;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
-
-import javax.xml.crypto.Data;
 import java.io.IOException;
-import java.util.Iterator;
 
 public class KMeansMRReducer extends Reducer<IntWritable, DataPoints, Text, Text> {
     private final Text centroidId = new Text();
     private final Text centroidValue = new Text();
-
     public void reduce(IntWritable centroid, Iterable<DataPoints> partialSums, Context context)
             throws IOException, InterruptedException {
-
         //Sum the partial sums
         DataPoints sum = DataPoints.copy(partialSums.iterator().next());
         while (partialSums.iterator().hasNext()) {
@@ -32,7 +23,7 @@ public class KMeansMRReducer extends Reducer<IntWritable, DataPoints, Text, Text
         context.write(centroidId, centroidValue);
     }
     /*
-    // This the cleanup method that implements the ...
+    // This is the cleanup
     @Override
     protected void cleanup(Context context) throws InterruptedException, IOException {
         Configuration conf = context.getConfiguration();
@@ -42,5 +33,4 @@ public class KMeansMRReducer extends Reducer<IntWritable, DataPoints, Text, Text
         TODO  ...
         }
      */
-
 }

@@ -13,20 +13,18 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.apache.hadoop.util.GenericOptionsParser;
 import java.io.*;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 public class KMeansMRMain {
     public static void main(String[] args) throws Exception {
-        long start = 0;
-        long end = 0;
-        long startInitialCentroids = 0;
-        long endInitialCentroids = 0;
+        long start;
+        long end ;
         start = System.currentTimeMillis();
-        //store hadoop  configuration settings
         Configuration conf = new Configuration();
-        // Here is the <<config.xml>> file for the input parameters, it adds the resource to the configuration
+        // Config XML file location.
+        //home/tess/IdeaProjects/kmeans_clustering_hadoop/src/main/resources/config.xml
         conf.addResource(new Path("/home/tess/IdeaProjects/kmeans_clustering_hadoop/src/main/resources/config.xml"));
         //non-hadoop commandline args
         String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs();
@@ -38,19 +36,36 @@ public class KMeansMRMain {
         final String INPUT = otherArgs[0];
         final String OUTPUT = otherArgs[1] + "/temp";
         final int DATASET_SIZE = conf.getInt("dataset", 10);
-        final int DISTANCE = conf.getInt("distance", 2);
-        final int K = conf.getInt("k", 3);
+        final int h = conf.getInt("distance", 2);
+        final int K = conf.getInt("k", 4);
         final float THRESHOLD = conf.getFloat("threshold", 0.0001f);
-        final int MAX_ITERATIONS = conf.getInt("max.iteration", 30);
+        final int MAX_ITERATIONS = conf.getInt("max.iteration", 100);
         //
         DataPoints[] oldCentroids = new DataPoints[K];
-        DataPoints[] newCentroids = new DataPoints[K];
-        //Initial centroids
-        startInitialCentroids = System.currentTimeMillis();
-        newCentroids = randomInitialCentroids(conf, INPUT, K, DATASET_SIZE);
-        endInitialCentroids = System.currentTimeMillis();
-        for(int i = 0; i < K; i++) {
-            conf.set("centroid." + i, newCentroids[i].toString());
+        // Read initial centroids from the hdfs file.
+        List<DataPoints> newCentroids = new ArrayList<>();
+        try {
+            Path filePath = new Path("/user/input/ic4D4K150N.txt");
+            FileSystem fs = filePath.getFileSystem(conf);
+            try (FSDataInputStream in = fs.open(filePath);
+                 BufferedReader br = new BufferedReader(new InputStreamReader(in))) {
+                String line;
+                while ((line = br.readLine()) != null) {
+                    String[] centroidCoords = line.split(",");
+                    float[] coords = new float[centroidCoords.length];
+                    for (int i = 0; i < centroidCoords.length; i++) {
+                        coords[i] = Float.parseFloat(centroidCoords[i]);
+                    }
+                    DataPoints centroid = new DataPoints(coords);
+                    newCentroids.add(centroid);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // Write the initial centroids to the configuration.
+        for (int i = 0; i < newCentroids.size(); i++) {
+            conf.set("centroid." + i, newCentroids.get(i).toString());
         }
         //MapReduce workflow
         boolean stop = false;
@@ -59,22 +74,22 @@ public class KMeansMRMain {
         while(!stop) {
             i++;
             //Job configuration
-            Job iteration = Job.getInstance(conf, "iter_" + i);
+            Job job = Job.getInstance(conf, "iter_" + i);
+            job.setJarByClass(KMeansMRMain.class);
+            job.setMapperClass(KMeansMRMapper.class);
+            job.setCombinerClass(KMeansMRCombiner.class);
+            job.setReducerClass(KMeansMRReducer.class);
+            job.setNumReduceTasks(K); //Taking each centroid task is done by a single reducer.
+            job.setOutputKeyClass(IntWritable.class);
+            job.setOutputValueClass(DataPoints.class);
             //
-            iteration.setJarByClass(KMeansMRMain.class);
-            iteration.setMapperClass(KMeansMRMapper.class);
-            iteration.setCombinerClass(KMeansMRCombiner.class);
-            iteration.setReducerClass(KMeansMRReducer.class);
-            iteration.setNumReduceTasks(K); //one task each centroid
-            iteration.setOutputKeyClass(IntWritable.class);
-            iteration.setOutputValueClass(DataPoints.class);
+            FileInputFormat.addInputPath(job, new Path(INPUT));
+            FileOutputFormat.setOutputPath(job, new Path(OUTPUT));
             //
-            FileInputFormat.addInputPath(iteration, new Path(INPUT));
-            FileOutputFormat.setOutputPath(iteration, new Path(OUTPUT));
-            iteration.setInputFormatClass(TextInputFormat.class);
-            iteration.setOutputFormatClass(TextOutputFormat.class);
+            job.setInputFormatClass(TextInputFormat.class);
+            job.setOutputFormatClass(TextOutputFormat.class);
             //
-            succeded = iteration.waitForCompletion(true);
+            succeded = job.waitForCompletion(true);
             //If the job fails the application will be closed.
             if(!succeded) {
                 System.err.println("Iteration" + i + "failed.");
@@ -82,86 +97,47 @@ public class KMeansMRMain {
             }
             //Save old centroids and read new centroids
             for(int id = 0; id < K; id++) {
-                oldCentroids[id] = DataPoints.copy(newCentroids[id]);
+                //oldCentroids.set(id, DataPoints.copy(newCentroids.get(id)));
+                oldCentroids[id] = DataPoints.copy(newCentroids.get(id));
             }
-            newCentroids = readCentroids(conf, K, OUTPUT);
-            //Let's check
-            stop = hasConverged(oldCentroids, newCentroids, DISTANCE, THRESHOLD);
+            //
+            newCentroids = new ArrayList<>(Arrays.asList(readCentroids(conf, K, OUTPUT)));
+            stop = hasConverged(Arrays.asList(oldCentroids), newCentroids, h, THRESHOLD);
+            //If the centroids change then write them to the output folder.
             if(stop || i == (MAX_ITERATIONS -1)) {
-                writeCentroids(conf, newCentroids, otherArgs[1]);
+                writeFinalCentroids(conf, newCentroids, otherArgs[1]);
             } else {
-                //Set the new centroids in the configuration
+                //Otherwise: Set the new centroids in the configuration
                 for(int d = 0; d < K; d++) {
                     conf.unset("centroid." + d);
-                    conf.set("centroid." + d, newCentroids[d].toString());
+                    conf.set("centroid." + d, newCentroids.get(d).toString());
                 }
             }
         }
         end = System.currentTimeMillis();
         end -= start;
-        endInitialCentroids -= startInitialCentroids;
         System.out.println("execution time: " + end + " ms");
-        System.out.println("init centroid execution: " + endInitialCentroids + " ms");
         System.out.println("n_iter: " + i);
         System.exit(0);
     }
 
-    private static DataPoints[] randomInitialCentroids(Configuration conf, String pathString, int k, int dataSetSize)
-            throws IOException {
-        System.out.println("Generating random initial centroids!");
-        DataPoints[] coordinatePoints = new DataPoints[k];
-        List<Integer> positions = new ArrayList<Integer>();
-        Random random = new Random();
-        int pos;
-        while(positions.size() < k) {
-            pos = random.nextInt(dataSetSize);
-            if(!positions.contains(pos)) {
-                positions.add(pos);
-            }
-        }
-        Collections.sort(positions);
-
-        //File reading utils
-        Path path = new Path(pathString);
-        FileSystem hdfs = FileSystem.get(conf);
-        FSDataInputStream in = hdfs.open(path);
-        BufferedReader br = new BufferedReader(new InputStreamReader(in));
-
-        //Get centroids from the file
-        int row = 0;
-        int i = 0;
-        int position;
-        while(i < positions.size()) {
-            position = positions.get(i);
-            String point = br.readLine();
-            if(row == position) {
-                coordinatePoints[i] = new DataPoints(point.split(","));
-                i++;
-            }
-            row++;
-        }
-        br.close();
-
-        return coordinatePoints;
-    }
-    private static boolean hasConverged(DataPoints[] oldCentroids, DataPoints[] newCentroids, int distance, float threshold) {
+    private static boolean hasConverged(List<DataPoints> oldCentroids, List<DataPoints> newCentroids, int h, float threshold) {
         boolean convergencyCondition;
-        for(int i = 0; i < oldCentroids.length; i++) {
-            convergencyCondition = oldCentroids[i].distanceCalculator(newCentroids[i], distance) <= threshold;
+        for(int i = 0; i < oldCentroids.size(); i++) {
+            convergencyCondition = oldCentroids.get(i).distanceCalculator(newCentroids.get(i), h) <= threshold;
             if(!convergencyCondition) {
                 return false;
             }
         }
         return true;
     }
-
-    private static void writeCentroids(Configuration conf, DataPoints[] centroids, String output) throws IOException {
+    private static void writeFinalCentroids(Configuration conf, List<DataPoints> centroids, String output) throws IOException {
         FileSystem hdfsFileSystem = FileSystem.get(conf);
-        FSDataOutputStream outputStream = hdfsFileSystem.create(new Path(output + "/MapReducecentroids.txt"), true);
+        FSDataOutputStream outputStream = hdfsFileSystem.create(new Path(output + "/fc4D4K150N.txt"), true);
         BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream));
         //Write the result in a unique file
-        for(int i = 0; i < centroids.length; i++) {
-            bufferedWriter.write(centroids[i].toString());
+        for(int i = 0; i < centroids.size(); i++) {
+            bufferedWriter.write(centroids.get(i).toString());
             bufferedWriter.newLine();
         }
         bufferedWriter.close();

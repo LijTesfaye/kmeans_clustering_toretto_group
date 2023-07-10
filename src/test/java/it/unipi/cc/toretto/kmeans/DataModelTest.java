@@ -19,8 +19,6 @@ public class DataModelTest  extends TestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
-        //XA = [(1, 2, 3, -4, 5, 6, 7)]
-        //XB = [(2, 1, 0, 1, 2, 3, 4)]
         p1 = new DataPoints(new float[] {1, 2});
         p2 = new DataPoints(new float[] {2, 1});
 
@@ -36,25 +34,25 @@ public class DataModelTest  extends TestCase {
     protected void tearDown() throws Exception {
         super.tearDown();
     }
-    public void testMinkowsky4() {
+    public void testMinkowsky() {
         float distance = z2.distanceCalculator(z3, 5);
         System.out.println("Minkowsky Test 4 Distance: " + distance);
         assertTrue(distance == 0.0f);
     }
 
-    public void testInfinity1() {
+    public void testInfinity() {
         float distance = p1.distanceCalculator(p2, 0);
         System.out.println("Infinity Test 1 Distance: " + distance);
         assertTrue(Math.abs(distance - 1.0) < 0.0001f);
     }
 
-    public void testManhattan4() {
+    public void testManhattan() {
         float distance = z2.distanceCalculator(z3, 1);
         System.out.println("Manhattan Test 4 Distance: " + distance);
         assertTrue(distance == 0.0f);
     }
 
-    public void testEuclidean1() {
+    public void testEuclidean() {
         float distance = p1.distanceCalculator(p2, 2);
         System.out.println("Euclidean Test 1 Distance: " + distance);
         assertTrue(Math.abs(distance - 1.4142) < 0.0001f );

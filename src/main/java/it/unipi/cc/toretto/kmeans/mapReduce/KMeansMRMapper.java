@@ -6,46 +6,47 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.mapreduce.Mapper;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class KMeansMRMapper extends Mapper<LongWritable, Text, IntWritable, DataPoints> {
-    private DataPoints[] centroids;
-    private int p;
-    private final DataPoints point = new DataPoints();
-    private final IntWritable centroid = new IntWritable();
-
+    private List<DataPoints> initialCentroids; // initial centroids
+    private int h;
+    private final DataPoints dataPoint = new DataPoints();
+    private final IntWritable nearestCentroid = new IntWritable();
     public void setup(Context context) {
         int k = Integer.parseInt(context.getConfiguration().get("k"));
-        this.p = Integer.parseInt(context.getConfiguration().get("distance"));
-        this.centroids = new DataPoints[k];
+        this.h = Integer.parseInt(context.getConfiguration().get("distance"));
+        //this.initialCentroids = List.of(new DataPoints[k]);
+        this.initialCentroids = Arrays.asList(new DataPoints[k]);
+        // read the initial centroids as follows.
         for(int i = 0; i < k; i++) {
-            String[] centroid = context.getConfiguration().getStrings("centroid." + i);
-            this.centroids[i] = new DataPoints(centroid);
+            String[] configCentroid = context.getConfiguration().getStrings("centroid." + i);
+            this.initialCentroids.set(i, new DataPoints(configCentroid));
+        }
+        System.out.println("[MAPPER] Initial centroids are :");
+        for(int ic=0; ic<k; ic++){
+            System.out.println(initialCentroids.get(ic));
         }
     }
-
     public void map(LongWritable key, Text value, Context context)
             throws IOException, InterruptedException {
-
-        // Contruct the point
+        // Construct the point
         String[] pointString = value.toString().split(",");
-        point.initData(pointString);
-
+        dataPoint.initData(pointString);
         // Initialize variables
         float minDist = Float.POSITIVE_INFINITY;
         float distance = 0.0f;
         int nearest = -1;
-
         // Find the closest centroid
-        for (int i = 0; i < centroids.length; i++) {
-            distance = point.distanceCalculator(centroids[i], p);
+        for (int i = 0; i < initialCentroids.size(); i++) {
+            distance = dataPoint.distanceCalculator(initialCentroids.get(i), h);
             if(distance < minDist) {
                 nearest = i;
                 minDist = distance;
             }
         }
-        centroid.set(nearest);
-        context.write(centroid, point);
+        nearestCentroid.set(nearest);
+        context.write(nearestCentroid, dataPoint);
     }
 }
