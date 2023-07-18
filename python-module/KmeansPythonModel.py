@@ -5,7 +5,7 @@ import pandas as pd
 from matplotlib import pyplot
 """"
 This file does the following  major things
-1) It generates the centers of every cluster 
+1) It generates the centers of every claster 
 2) plots the center of each cluster in red and the rest of the cluster in blue
 3) saves the plot
 """
