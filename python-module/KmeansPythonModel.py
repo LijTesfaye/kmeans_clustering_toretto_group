@@ -1,18 +1,22 @@
 from sklearn.cluster import KMeans
 import numpy as np
 import time
-from statistics import mean
 import pandas as pd
 from matplotlib import pyplot
-
+""""
+This file does the following  major things
+1) It genrates the centers of every claster 
+2) plots the center of each cluster in red and the rest of the cluster in blue
+3) saves the plot
+"""
 d_dimensions=4
 k_clusters = 4
 n_samples=150
-
+#
+test_case =1
 # Load the initial centroids from the file
-inputfile = f"ic{d_dimensions}D{k_clusters}K{n_samples}N.txt"
-outputfile = f"fc{d_dimensions}D{k_clusters}K{n_samples}N.txt"
-
+inputfile = f"icKmeansPP_{d_dimensions}D{k_clusters}K{n_samples}N.txt"
+outputfile = f"fcKmeansPP_{d_dimensions}D{k_clusters}K{n_samples}N.txt"
 initial_centroids = np.loadtxt(inputfile, delimiter=',')
 points = []
 ###
@@ -45,7 +49,7 @@ with open(outputfile, "w") as output_file:
         rounded_centroid = np.around(centroid, decimals=4)
         output_file.write(','.join(map(str, rounded_centroid)) + '\n')
     output_file.write(f"Number of iterations: {kmeans.n_iter_}")
-# Plot the points as blue and the cluster centers as orange
+# Plot the points as blue and the cluster centers as red
 cent = kmeans.cluster_centers_
 centr = np.array(cent)
 # Concatenate the points with the centroids
@@ -56,14 +60,12 @@ df = pd.DataFrame({'x': c[:, 0], 'y': c[:, 1]})
 labels = ['blue'] * len(dataset) + ['red'] * k_clusters
 df['label'] = labels
 print(df)
-
-
-
+#
 df.plot(x='x', y='y', c=df['label'], kind='scatter')
 pyplot.legend()
 pyplot.xlabel(f'({d_dimensions} dimensions)')
 pyplot.ylabel(f' ({k_clusters} clusters)')
-pyplot.title(f'[The Made up dataset centroids ({n_samples} samples) Scatter Graph')
+pyplot.title(f'[Madeup dataset][KmeansPP][{n_samples} samples][cluster centers]')
+plot_filename = f"plot_Cluster_Centers_KmeansPP_{d_dimensions}D{k_clusters}K{n_samples}N.png"
+pyplot.savefig(plot_filename)
 pyplot.show()
-
-
