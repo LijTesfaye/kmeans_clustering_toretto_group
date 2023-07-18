@@ -1,5 +1,10 @@
 <?xml version="1.0"?>
 <configuration>
+    <property>
+    <name>num_reducers</name>
+    <value>2</value>
+    <description>Number of reducers</description>
+  </property>
   <property>
     <name>dataset</name>
     <value>2</value>
@@ -17,12 +22,12 @@
   </property>
   <property>
     <name>threshold</name>
-    <value>0</value>
+    <value>0.01</value>
     <description>Threshold for the stopping criterion</description>
   </property>
   <property>
-    <name>max.iteration</name>
-    <value>100</value>
+    <name>max_iteration</name>
+    <value>10</value>
     <description>Maximum iterations</description>
   </property>
 </configuration>

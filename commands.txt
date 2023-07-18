@@ -1,7 +1,4 @@
 
-1) cd /home/tess/IdeaProjects/kmeans_clustering_hadoop/target/
-2) hadoop jar kmeans.clustering.hadoop-1.0-SNAPSHOT.jar  it.unipi.cc.toretto.kmeans.KMeansMRMain 4 2 1000 7d_1000n_7k.txt output7d_1000n_7k.txt 0.5
-
 // for my implementation the
 Fist time you run:
 1) cd /home/tess/IdeaProjects/kmeans_clustering_hadoop/target/
@@ -14,7 +11,9 @@ $ hadoop jar kmeans.hadoop.toretto-1.0-SNAPSHOT.jar it.unipi.cc.toretto.kmeans.K
 other times:
 $ cd /home/tess/IdeaProjects/kmeans_clustering_hadoop/target/
 $ hadoop jar kmeans.hadoop.toretto-1.0-SNAPSHOT.jar it.unipi.cc.toretto.kmeans.KMeansMRMain /user/input/data2D4means.txt /output
+hadoop jar kmeans.hadoop.toretto-1.0-SNAPSHOT.jar it.unipi.cc.toretto.kmeans.KMeansMRMain /user/input/data4D4K150N.txt /output
 
+hadoop jar kmeans.hadoop.toretto-1.0-SNAPSHOT.jar it.unipi.cc.toretto.kmeans.KMeansMRMain /user/tess/input/data2D2K500N.txt /user/tess/output
 
 *** Extra
 1) To delete a directory use this
