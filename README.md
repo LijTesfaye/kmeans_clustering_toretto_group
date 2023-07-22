@@ -75,12 +75,12 @@ class COMBINER
 ### Reducer Pseudocode
 Finally the **reducer** calculates the new approximation of the centroid and emits it. 
 
-**Input
+**Input**
 ```java
 key: centroid_index
 value:list_partial_points_sum
 ```
-Output
+**Output**
 ```java
 key: new_centroid_index
 value:new_centroid
