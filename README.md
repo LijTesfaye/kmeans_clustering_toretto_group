@@ -101,6 +101,7 @@ NB:
 The result of the MapReduce stage will be the same even if the combiner is not called by the Hadoop framework.
 
 ### Validation of Our Algorithm
+
 #### 2D random sample dataset
 We generated a sample dataset using a python script to validate the 
 work we did using **Mapreduce** and the **kmeans using python's** kmeans
