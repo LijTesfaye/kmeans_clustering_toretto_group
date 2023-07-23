@@ -264,6 +264,54 @@ mr_final_centroids = mr_kmeans.cluster_centers_
 Sample result for test-case1.It is plotted using the **compare_models.py** script. The centers of the two models are overlapped and you can see only one color.
 ![Test-case1](https://github.com/LijTesfaye/kmeans_clustering_toretto_group/blob/master/python-module/plot_compare_models_2D2K500N.png).
 
+### Kmeans++
+Since the kmeans algorithm is sensitive to the **intial centroids** used we also implemented the **kmeans++** to generate the initial  centroids. This approach generates better results than the implemenetation that took randomly generated initial centroids. The python script to do so is called the **icKmeans++Gen.py**.
+```python
+"""
+imports goes here
+"""
+def kmeans_plus_plus(X, n_clusters):
+    # Randomly select the first centroid
+    centroids = [X[np.random.randint(X.shape[0])]]
+
+    # Calculate the squared Euclidean distances from each point to the nearest centroid
+    distances = np.sum((X - centroids[0]) ** 2, axis=1)
+
+    # Select the remaining centroids iteratively
+    for _ in range(1, n_clusters):
+        # Choose the next centroid based on the calculated probabilities
+        probabilities = distances / np.sum(distances)
+        next_centroid_index = np.random.choice(X.shape[0], p=probabilities)
+        next_centroid = X[next_centroid_index]
+        centroids.append(next_centroid)
+        # Update the squared Euclidean distances for the new centroid
+        new_distances = np.sum((X - next_centroid) ** 2, axis=1)
+        distances = np.minimum(distances, new_distances)
+    return np.array(centroids)
+#
+# change the values of d_dimensions,k_clusters,n_samples based on your use case.
+d_dimensions = 2
+k_clusters = 2
+n_samples = 500
+
+data_file = f"data{d_dimensions}D{k_clusters}K{n_samples}N.txt"
+output_file = f"icKmeansPP_{d_dimensions}D{k_clusters}K{n_samples}N.txt"
+
+data = np.loadtxt(data_file, delimiter=',')  # Load data from the text file
+
+num_dimensions = data.shape[1]
+print("Number of dimensions:", num_dimensions)
+
+# initial Centroids generation
+initial_centroids = kmeans_plus_plus(data, n_clusters=k_clusters)
+
+# Write initial centroids to the output file with four decimal places
+np.savetxt(output_file, initial_centroids, delimiter=',', fmt='%.4f')
+print(f"Initial centroids saved to {output_file}")
+```
+## Effect of Number of Reducers
+We also tried to show the effect of **the number of reducers** from the resource utilization point of viw. We took the **execution** time 
+![num_reducers](https://github.com/LijTesfaye/kmeans_clustering_toretto_group/blob/master/python-module/num_reducers.png)
 # Test Cases
 We did 8(User generated)+1(Iris dataset i.e a real data) types of test cases.
 If you are interested in those test case you can check them in the directory found [here](https://github.com/LijTesfaye/kmeans_clustering_toretto_group/tree/master/python-module)
