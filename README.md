@@ -39,6 +39,7 @@ Class MAPPER
         distanceFromCentroid <- distance
   Emit(centroidID, point)
 ```
+Initial centroids are read from the Hadoop configration using the setup() method.
 ### Combiner Pseudocode
 On every stage we need to sum the data points belonging to a cluster to calculate the centroid (arithmetic mean of points). 
 Since the sum is an associative and commutative function, it will be very advantageous to use a combiner to reduce the amount 
