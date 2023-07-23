@@ -107,24 +107,9 @@ The one below shows that we are going to work on a datset that has 4-dimension a
 The python script [here](https://github.com/LijTesfaye/kmeans_clustering_toretto_group/blob/master/python-module/dataset_Gen.py) is used to generate a madeup dataset.
 ``` python
 """
-main imports
-"""
-from sklearn.datasets import make_blobs
-import pandas as pd
-from pandas import DataFrame
-from pandas.plotting._matplotlib import scatter_matrix
-import numpy as np
-from matplotlib import pyplot
-""""
-This file does the following  major things
-1) It generated a made-up dataset
-2) plots the clusters in different colors
-3) saves the plot
+main imports goes here 
 """
 #
-"""
-These are the input values that we gonna vary to get a different dataset types.
-"""
 # basic variables of the kmeans
 d_dimensions = 4
 k_clusters = 4
