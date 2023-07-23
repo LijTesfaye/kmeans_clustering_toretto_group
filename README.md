@@ -124,6 +124,71 @@ X_data, y = make_blobs(n_samples=n_samples, n_features=d_dimensions, centers=k_c
 filename = f"data{d_dimensions}D{k_clusters}K{n_samples}N.txt"
 .... [Code Cropped ] ...
 ```
+## Initial centroids generator
+Once the **dataset** is generated the logical step is to generate the **intial centroids**.
+The script in [here](https://github.com/LijTesfaye/kmeans_clustering_toretto_group/blob/master/python-module/iCentroidsGen.py) does the job.
+Let's have a taste of it ...
+```python
+import numpy as np
+# Example usage
+d_dimensions=4
+k_clusters = 4
+n_samples=500
+#
+data_file = f"data{d_dimensions}D{k_clusters}K{n_samples}N.txt"
+output_file = f"icRandom_{d_dimensions}D{k_clusters}K{n_samples}N.txt"
+
+data = np.loadtxt(data_file, delimiter=',')  # Load data from the text file
+num_dimensions = data.shape[1]
+print("Number of dimensions:", num_dimensions)
+# Generate random initial centroids
+np.random.seed()  # Use system time as the random seed
+centroids = np.random.permutation(data)[:k_clusters]
+
+# Write initial centroids to the output file with four decimal places
+np.savetxt(output_file, centroids, delimiter=',', fmt='%.4f')
+print(f"Initial centroids saved to {output_file}")
+```
+## The kmeans implementation in Python
+The third logocal step is to design a python implementation of the kmeans algorithm  for the validation purpose.
+This script is **very useful** to compare the **mapreduce** implementation of the **kmeans algorithm** to the one in the **python**.
+The script is found [here](https://github.com/LijTesfaye/kmeans_clustering_toretto_group/blob/master/python-module/KmeansPythonModel.py).
+
+```python
+"""
+imports goes here
+"""
+d_dimensions=4
+k_clusters = 4
+n_samples=500
+#
+test_case =1
+# Load the initial centroids from the file
+inputfile = f"icKmeansPP_{d_dimensions}D{k_clusters}K{n_samples}N.txt"
+outputfile = f"fcKmeansPP_{d_dimensions}D{k_clusters}K{n_samples}N.txt"
+initial_centroids = np.loadtxt(inputfile, delimiter=',')
+points = []
+###
+max_iteration =100
+#
+start_milli_time = round(time.time() * 1000, 4)
+filename = f"data{d_dimensions}D{k_clusters}K{n_samples}N.txt"
+with open(filename, "r") as file:
+    for line in file:
+        comps = line.split(",")
+        point = [float(comps[i]) for i in range(len(comps))]
+        points.append(point)
+dataset = np.array(points)
+kmeans = KMeans(n_clusters=k_clusters,
+                init=initial_centroids,
+                max_iter=max_iteration,
+                random_state=42).fit(dataset)
+end_milli_time = round(time.time() * 1000, 4)
+execution_time = round(end_milli_time - start_milli_time, 4)
+...[Code cropped] ...
+```
+###
+
 ### 
 ### 2D random sample dataset
 
@@ -132,7 +197,12 @@ work we did using **Mapreduce** and the **kmeans using python's** kmeans
 class.
 
 ### Test Cases
--
+We did 8 types of test cases.
+If you are interested in those test case you can check them in the directory found [here](https://github.com/LijTesfaye/kmeans_clustering_toretto_group/tree/master/python-module)
+## Community
+- @LijTesfaye
+- @aidahimm
+- @michael
 
 
 
