@@ -2,7 +2,7 @@
 <configuration>
     <property>
     <name>num_reducers</name>
-    <value>2</value>
+    <value>1</value>
     <description>Number of reducers</description>
   </property>
   <property>
@@ -27,7 +27,8 @@
   </property>
   <property>
     <name>max_iteration</name>
-    <value>10</value>
+    <value>25</value>
     <description>Maximum iterations</description>
   </property>
 </configuration>
+

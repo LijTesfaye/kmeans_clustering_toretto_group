@@ -1,12 +1,18 @@
 package it.unipi.cc.toretto.kmeans;
-
-
-
-
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.util.GenericOptionsParser;
+
+/**
+ * This is the MainClass
+ *
+ */
 public class KMeansMRMain {
+    /**
+     * The Entry point to the whole kmeans code we have been talking about.
+     * @param args Holds the command-line arguments:- 'input' path, 'output' path
+     * @throws Exception
+     */
     public static void main(String[] args) throws Exception {
         long start;
         long end;
@@ -31,13 +37,11 @@ public class KMeansMRMain {
         final int num_reducers = conf.getInt("num_reducers", 1);
         final int MAX_ITERATIONS = conf.getInt("max_iteration", 100);
         // initial centroids file name  /user/tess/input/icKmeansPP_2D2K500N.txt
-//icRandom_4D4K10000N.txt
         String initCentroidsFile = "icRandom_4D4K10000N";
-        // icKmeansPP, icRandom  4D4K1500N
         // Set initial centroids in the config
         KMeansHelper.setCentroidsToConf("centroids", KMeansHelper.readInitalCentroidsFromHDFS(conf, initCentroidsFile), conf);
         // workflow
-        KMeansHelper.MapReduceWorkFlow(conf, INPUT, OUTPUT, num_reducers, MAX_ITERATIONS, THRESHOLD, otherArgs1);
+        KMeansHelper.MapReduceWorkFlow(conf, INPUT, OUTPUT, num_reducers, MAX_ITERATIONS, THRESHOLD);
         end = System.currentTimeMillis();
         end -= start;
         System.out.println("execution time: " + end + " ms");
