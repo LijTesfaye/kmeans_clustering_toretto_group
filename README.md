@@ -284,6 +284,6 @@ Sample result for test-case1
 We did 8(User generated)+1(Iris dataset i.e a real data) types of test cases.
 If you are interested in those test case you can check them in the directory found [here](https://github.com/LijTesfaye/kmeans_clustering_toretto_group/tree/master/python-module)
 # Community
-- [@LijTesfaye](https://github.com/LijTesfaye)
-- [@aidahimm](https://github.com/aidahimm/)
-- [@michael]()
+- [Tesfaye](https://github.com/LijTesfaye)
+- [Aida](https://github.com/aidahimm/)
+- [Michael](https://github.com/Mickey374)
