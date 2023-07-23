@@ -92,9 +92,13 @@ class REDUCER
 NB:
 The result of the MapReduce stage will be the same even if the combiner is not called by the Hadoop framework.
 
-### Python for Validation 
-This is  the validation part of the project.... 
+## Python for Validation 
+For the purpose of validation of our work we used python. First lets have a little description of the main python scripts that are used in this project.
 
+
+### Dataset generator script
+The python script (here)[https://github.com/LijTesfaye/kmeans_clustering_toretto_group/blob/master/python-module/dataset_Gen.py] is used to generate a madeup dataset.
+### 
 ### 2D random sample dataset
 
 We generated a sample dataset using a python script to validate the 
