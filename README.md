@@ -261,7 +261,7 @@ mr_final_centroids = mr_kmeans.cluster_centers_
 
 ...[Code cropped] ...
 ```
-Sample result for test-case1.It is plotted using the **compare_models.py** script. The 
+Sample result for test-case1.It is plotted using the **compare_models.py** script. The centers of the two models are overlapped and you can see only one color.
 ![Test-case1](https://github.com/LijTesfaye/kmeans_clustering_toretto_group/blob/master/python-module/plot_compare_models_2D2K500N.png).
 
 # Test Cases
