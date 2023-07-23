@@ -87,7 +87,7 @@ class REDUCER
 NB:
 The result of the MapReduce stage will be the same even if the combiner is not called by the Hadoop framework.
 
-### The Pseudocode(s) in the Project
+### Python for Validation 
 This is  the validation part of the project.... 
 
 ### 2D random sample dataset
@@ -96,7 +96,7 @@ We generated a sample dataset using a python script to validate the
 work we did using **Mapreduce** and the **kmeans using python's** kmeans
 class.
 
-###Test
+### Test Cases
 -
 
 
