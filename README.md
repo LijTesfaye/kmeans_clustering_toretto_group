@@ -316,6 +316,7 @@ the result is for the test-case that has the following configurations.
 - d_dimensions =4
 - k_clusters = 4
 - n_samples = 10000
+- 
 The most reasonable results are found when the **num_reducers** are aproximately closer to the number of **k_clusters**. 
 ![num_reducers](https://github.com/LijTesfaye/kmeans_clustering_toretto_group/blob/master/python-module/num_reducers.png)
 # Test Cases
