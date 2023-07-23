@@ -94,7 +94,14 @@ The result of the MapReduce stage will be the same even if the combiner is not c
 
 ## Python for Validation 
 For the purpose of validation of our work we used python. First lets have a little description of the main python scripts that are used in this project.
+In every python script the user is expected to change these three variables based on the use-case they are working on.
+The one below shows that we are going to work on a datset that has 4-dimension and number of clusters are set to 4 and the number of samples is set to 500.
 
+** Here are the values **
+
+- d_dimensions=4
+- k_clusters = 4
+- n_samples=500
 
 ### Dataset generator script
 The python script [here](https://github.com/LijTesfaye/kmeans_clustering_toretto_group/blob/master/python-module/dataset_Gen.py) is used to generate a madeup dataset.
