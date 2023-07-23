@@ -310,7 +310,13 @@ np.savetxt(output_file, initial_centroids, delimiter=',', fmt='%.4f')
 print(f"Initial centroids saved to {output_file}")
 ```
 ## Effect of Number of Reducers
-We also tried to show the effect of **the number of reducers** from the resource utilization point of viw. We took the **execution** time 
+We also tried to show the effect of **the number of reducers** from the resource utilization point of viw. We took the **execution** time. 
+the result is for the test-case that has the following configurations.
+
+- d_dimensions =4
+- k_clusters = 4
+- n_samples = 10000
+The most reasonable results are found when the **num_reducers** are aproximately closer to the number of **k_clusters**. 
 ![num_reducers](https://github.com/LijTesfaye/kmeans_clustering_toretto_group/blob/master/python-module/num_reducers.png)
 # Test Cases
 We did 8(User generated)+1(Iris dataset i.e a real data) types of test cases.
