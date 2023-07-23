@@ -24,8 +24,8 @@ value : datapoint p
 ```
 Output: 
 ```java
-key: µc i.e the closest centroid
-value :p, i.e datapoint p.
+key:the closest centroidID
+value :point,i.e datapoint p.
 ```
 ```java
 Class MAPPER
@@ -48,7 +48,7 @@ The Combiner algorithm takes as input a **centroid** and a **list of points in t
 
 Input
 ```java
-key:centroid_index
+key:centroidId
 value: list_of_points_in_centroid	
 ```
 Output
