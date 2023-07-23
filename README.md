@@ -262,7 +262,7 @@ mr_final_centroids = mr_kmeans.cluster_centers_
 ...[Code cropped] ...
 ```
 Sample result for test-case1.It is plotted using the **compare_models.py** script. The 
-![Test-case1](https://github.com/LijTesfaye/kmeans_clustering_toretto_group/blob/master/python-module/plot_cluster_centers_2D2K500N.png).
+![Test-case1](https://github.com/LijTesfaye/kmeans_clustering_toretto_group/blob/master/python-module/plot_compare_models_2D2K500N.png).
 
 # Test Cases
 We did 8(User generated)+1(Iris dataset i.e a real data) types of test cases.
