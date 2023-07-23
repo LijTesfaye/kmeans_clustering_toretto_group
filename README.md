@@ -28,20 +28,16 @@ key: µc i.e the closest centroid
 value :p, i.e datapoint p.
 ```
 ```java
-class MAPPER
-	The initial centroids {µ1,µ2,...} are randomly sampled from X and are stored in a file.
-	method MAP(offset_file,DataPoints p)
-		// initialize values, min distance and the closest centroid
-		minDistance <- +infinity
-		centroid µc <- {}
-		for each centroid µ in list_of_centroids[µ1,µ2,...] do
-			// calculate distance
-			distance <- calculateDistance(p,µ)
-		 	// update the closest centroid
-		 	if distance < minDistance:
-		   	 minDistance = distance
-       		   	 µc = centroid µ
-	  EMIT(centroid µc,DataPoints p)
+Class MAPPER
+  method Map(key, point)
+    centroidID <- null
+    distanceFromCentroid <- Infinity
+    for every centroid in centroidsList do
+      distance <- Distance(centroid, point)
+      if centroidID = null || distance < distanceFromCentroid then
+        centroidID <- centroid.CentroidID
+        distanceFromCentroid <- distance
+  Emit(centroidID, point)
 ```
 ### Combiner Pseudocode
 On every stage we need to sum the data points belonging to a cluster to calculate the centroid (arithmetic mean of points). 
@@ -63,37 +59,29 @@ value: partial_point_sum
 Here is the pseudocode of the Combiner
  ```java
 class COMBINER
-    method COMBINER(centroid_index, list_of_points)
-        partial_points_sum = 0
-        partial_points_count = 0
-        for all point in list_of_points_in_ω:
-            partial_points_sum  += point
-            partial_points_count += 1
-        EMIT(centroid_index, partial_points_sum) 
+  method Reduce(centroidId, points)
+    partialSum <- sum(points)
+    Emit(centroidId, partialSum)
 ```
 ### Reducer Pseudocode
 Finally the **reducer** calculates the new approximation of the centroid and emits it. 
 **Input**
 ```java
-key: centroid_index
+key: centroidId
 value:list_partial_points_sum
 ```
 **Output**
 ```java
-key: new_centroid_index
-value:new_centroid
+key: new_centroidID
+value:nextCentroidPoint
 ```
 Here is the full pseudocode for the Reducer.
 ```java
 class REDUCER
-	method REDUCE(centroid_index, list_partial_points_sum)
-		total_count = getNumPoints(partial_points_sum)
-		points_sum=0
-		for all partial_points_sum in list_partial_points_sum:
-			points_sum += partial_point_sum
-			total_count +=getNumPoints(partial_points_sum)
-		new_centroid_=points_sum/total_count
-	EMIT(centroid_index,new_centroid)
+  method Reduce(centroidId, partialSums)
+    finalSum <- sum(partialSums)
+    nextCentroidPoint <- finalSum.average()
+  Emit(centroidId, nextCentroidPoint)
 ```
 NB:
 The result of the MapReduce stage will be the same even if the combiner is not called by the Hadoop framework.
