@@ -97,7 +97,7 @@ For the purpose of validation of our work we used python. First lets have a litt
 In every python script the user is expected to change these three variables based on the use-case they are working on.
 The one below shows that we are going to work on a datset that has 4-dimension and number of clusters are set to 4 and the number of samples is set to 500.
 
-** Here are the values **
+**Here are the values**
 
 - d_dimensions=4
 - k_clusters = 4
