@@ -97,7 +97,7 @@ For the purpose of validation of our work we used python. First lets have a litt
 
 
 ### Dataset generator script
-The python script (here)[https://github.com/LijTesfaye/kmeans_clustering_toretto_group/blob/master/python-module/dataset_Gen.py] is used to generate a madeup dataset.
+The python script [here](https://github.com/LijTesfaye/kmeans_clustering_toretto_group/blob/master/python-module/dataset_Gen.py) is used to generate a madeup dataset.
 ### 
 ### 2D random sample dataset
 
