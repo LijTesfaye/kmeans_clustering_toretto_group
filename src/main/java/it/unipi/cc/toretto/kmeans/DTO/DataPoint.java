@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
  * 1) coordinates : holds the geometric coordinates of a datapoint
  * 2) data: that holds the weight of a datapoint. The weight is important in the reducer to calculate the
  * average of the datapoints that are categorized into a centroid.
- *
  */
 public class DataPoint implements Writable {
     //datapoint coordinates
@@ -36,7 +35,6 @@ public class DataPoint implements Writable {
         this.coordinates = new ArrayList<>();
         this.data = 1;
     }
-
     /**
      * Constructor
      * @param coord Holds the coordinates of the new point.
@@ -72,7 +70,6 @@ public class DataPoint implements Writable {
         }
         dataOutput.writeInt(data);
     }
-
     /**
      * THis method reads the DataPoint object from DataInput
      * @param dataInput the input stream to read the data from.
@@ -88,13 +85,11 @@ public class DataPoint implements Writable {
         }
         this.data = dataInput.readInt();
     }
-
     /**
      * Calculate the Euclidean distance between two DataPoints
      * @param point the point from which the distance is going to be calculated.
      * @return the Euclidean distance
      */
-
     public double getDistance(@NotNull DataPoint point) {
         double sum = 0;
         for (int i = 0; i < coordinates.size(); i++) {
@@ -104,8 +99,8 @@ public class DataPoint implements Writable {
         return Math.sqrt(sum);
     }
     /**
-     * Sums-up two  datapoints' coordinate wise.
-     * @param point
+     * adds-up two  'datapoints' coordinate wise.
+     * @param point the  Datapoint object to be added
      */
     public void sum(DataPoint point) {
         for (int i = 0; i < this.coordinates.size(); i++) {
@@ -113,7 +108,6 @@ public class DataPoint implements Writable {
         }
         this.data += point.getInstances();
     }
-
     /**
      * Calculate the average of the datapoints sum
      * Every coordinate will be divided by the weight variable aka, 'data'.
@@ -122,7 +116,6 @@ public class DataPoint implements Writable {
         this.coordinates.replaceAll(aDouble -> aDouble / this.data);
         this.data = 1;
     }
-
     /**
      *  A Getter method
      * @return returns the 'Double Arraylist of coordinates'
@@ -130,7 +123,6 @@ public class DataPoint implements Writable {
     public ArrayList<Double> getCoordinates() {
         return coordinates;
     }
-
     /**
      * Getter
      * Retrieves the number of the corresponding elements of a partialSum
@@ -150,4 +142,3 @@ public class DataPoint implements Writable {
                 .collect(Collectors.joining(" "));
     }
 }
-

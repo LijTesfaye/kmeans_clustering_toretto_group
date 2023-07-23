@@ -9,7 +9,10 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.util.ArrayList;
 
-
+/**
+ * This class represents a centroid Object from the Kmeans algorithm.
+ * has two fields: The Datapoint object and the ID of  the centroid
+ */
 public class KMeansCentroid implements WritableComparable<KMeansCentroid> {
     /**
      * DataPoint Object that represents a KMeansCentroid Object
@@ -19,16 +22,15 @@ public class KMeansCentroid implements WritableComparable<KMeansCentroid> {
      * Integer ID of a given centroid
      */
     private final IntWritable centroidID;
-
     /**
-     * Default constructor for the  KMeansCentroid class
+     * Default constructor for the  KMeansCentroid Objects
+     * centroidID: initialized to empty IntWritable Object
+     * dataPoint: initialized to an empty datapoint
      */
-
     public KMeansCentroid() {
         this.centroidID = new IntWritable();
         this.dataPoint = new DataPoint();
     }
-
     /**
      * Create KMeansCentroid object given the Corresponding ID and coordinates of a centroid
      *
@@ -39,7 +41,6 @@ public class KMeansCentroid implements WritableComparable<KMeansCentroid> {
         this.centroidID = new IntWritable(centroid_id);
         this.dataPoint = new DataPoint(coords);
     }
-
     /**
      * Write the KMeansCentroid object to an output stream
      *
@@ -51,7 +52,6 @@ public class KMeansCentroid implements WritableComparable<KMeansCentroid> {
         this.centroidID.write(dataOutput);
         this.dataPoint.write(dataOutput);
     }
-
     /**
      * Helps for sorting purpose by comparing two centroids objects based on their centroidID
      *
@@ -62,7 +62,6 @@ public class KMeansCentroid implements WritableComparable<KMeansCentroid> {
     public int compareTo(KMeansCentroid other) {
         return Double.compare(this.getCentroidID().get(), other.getCentroidID().get());
     }
-
     /**
      * Read KMeansCentroid objects from DataInput Stream
      *
@@ -74,7 +73,6 @@ public class KMeansCentroid implements WritableComparable<KMeansCentroid> {
         this.centroidID.readFields(dataInput);
         this.dataPoint.readFields(dataInput);
     }
-
     /**
      * retrives the Datapoint object that represents the KMeansCentroid object
      * @return the Datapoint
@@ -89,7 +87,6 @@ public class KMeansCentroid implements WritableComparable<KMeansCentroid> {
     public void setPoint(DataPoint point) {
         this.dataPoint = point;
     }
-
     /**
      * Getter
      *
@@ -99,3 +96,4 @@ public class KMeansCentroid implements WritableComparable<KMeansCentroid> {
         return centroidID;
     }
 }
+

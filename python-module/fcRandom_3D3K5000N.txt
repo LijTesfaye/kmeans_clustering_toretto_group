@@ -1,0 +1,6 @@
+Execution time: 152.8643 ms
+Cluster centers:
+-2.5888,9.0351,4.6808
+-8.8735,7.3316,2.0448
+1.9257,-6.8648,-6.9211
+Number of iterations: 5
