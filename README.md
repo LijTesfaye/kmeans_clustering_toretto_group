@@ -92,7 +92,7 @@ class REDUCER
 NB:
 The result of the MapReduce stage will be the same even if the combiner is not called by the Hadoop framework.
 
-## Python for Validation 
+# Python for Validation 
 For the purpose of validation of our work we used python. First lets have a little description of the main python scripts that are used in this project.
 In every python script the user is expected to change these three variables based on the use-case they are working on.
 The one below shows that we are going to work on a datset that has 4-dimension and number of clusters are set to 4 and the number of samples is set to 500.
