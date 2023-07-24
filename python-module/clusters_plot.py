@@ -4,8 +4,8 @@ from matplotlib import pyplot
 from sklearn.cluster import KMeans
 import os
 ##
-d_dimensions=4
-k_clusters = 4
+d_dimensions=2
+k_clusters = 2
 n_samples=150
 ##
 # Generate the input file path
@@ -41,3 +41,4 @@ pyplot.savefig(plot_filename)
 pyplot.savefig(output_filename)
 # Display the plot
 pyplot.show()
+
