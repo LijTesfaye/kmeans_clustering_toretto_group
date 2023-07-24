@@ -92,7 +92,7 @@ class REDUCER
 NB:
 The result of the MapReduce stage will be the same even if the combiner is not called by the Hadoop framework.
 
-## Python for Validation 
+# Python for Validation 
 For the purpose of validation of our work we used python. First lets have a little description of the main python scripts that are used in this project.
 In every python script the user is expected to change these three variables based on the use-case they are working on.
 The one below shows that we are going to work on a datset that has 4-dimension and number of clusters are set to 4 and the number of samples is set to 500.
@@ -149,7 +149,7 @@ centroids = np.random.permutation(data)[:k_clusters]
 np.savetxt(output_file, centroids, delimiter=',', fmt='%.4f')
 print(f"Initial centroids saved to {output_file}")
 ```
-# The kmeans implementation in Python
+## The kmeans implementation in Python
 The third logocal step is to design a python implementation of the kmeans algorithm  for the validation purpose.
 This script is **very useful** to compare the **mapreduce** implementation of the **kmeans algorithm** to the one in the **python**.
 The script is found [here](https://github.com/LijTesfaye/kmeans_clustering_toretto_group/blob/master/python-module/KmeansPythonModel.py).
