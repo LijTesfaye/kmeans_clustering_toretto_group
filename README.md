@@ -149,7 +149,7 @@ centroids = np.random.permutation(data)[:k_clusters]
 np.savetxt(output_file, centroids, delimiter=',', fmt='%.4f')
 print(f"Initial centroids saved to {output_file}")
 ```
-## The kmeans implementation in Python
+# The kmeans implementation in Python
 The third logocal step is to design a python implementation of the kmeans algorithm  for the validation purpose.
 This script is **very useful** to compare the **mapreduce** implementation of the **kmeans algorithm** to the one in the **python**.
 The script is found [here](https://github.com/LijTesfaye/kmeans_clustering_toretto_group/blob/master/python-module/KmeansPythonModel.py).
